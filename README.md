@@ -1,10 +1,10 @@
 # Sequential Data Store .NET REST API Sample
 
-**Version:** 1.1.7
+**Version:** 1.1.8
 
 [![Build Status](https://dev.azure.com/osieng/engineering/_apis/build/status/product-readiness/OCS/osisoft.sample-ocs-waveform-dotnet_rest_api?repoName=osisoft%2Fsample-ocs-waveform-dotnet_rest_api&branchName=master)](https://dev.azure.com/osieng/engineering/_build/latest?definitionId=2628&repoName=osisoft%2Fsample-ocs-waveform-dotnet_rest_api&branchName=master)
 
-Developed against DotNet 2.2.105.
+Developed against DotNet 5.0.
 
 ## Building a Client with the rest calls directly
 
@@ -291,7 +291,7 @@ RunInTryCatch(httpClient.DeleteAsync,($"api/{apiVersion}/Tenants/{tenantId}/Name
 
 ---
 
-Tested against DotNet 2.2.105.
+Tested against DotNet 5.0.
 
 For the main OCS DotNet waveform samples page on master [ReadMe](https://github.com/osisoft/OSI-Samples-OCS/blob/master/docs/SDS_WAVEFORM_DOTNET_README.md)  
 For the main OCS waveform samples page on master [ReadMe](https://github.com/osisoft/OSI-Samples-OCS/blob/master/docs/SDS_WAVEFORM_README.md)  
