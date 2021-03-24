@@ -1,8 +1,8 @@
 # Sequential Data Store .NET REST API Sample
 
-**Version:** 1.1.8
+**Version:** 1.1.9
 
-[![Build Status](https://dev.azure.com/osieng/engineering/_apis/build/status/product-readiness/OCS/osisoft.sample-ocs-waveform-dotnet_rest_api?repoName=osisoft%2Fsample-ocs-waveform-dotnet_rest_api&branchName=master)](https://dev.azure.com/osieng/engineering/_build/latest?definitionId=2628&repoName=osisoft%2Fsample-ocs-waveform-dotnet_rest_api&branchName=master)
+[![Build Status](https://dev.azure.com/osieng/engineering/_apis/build/status/product-readiness/OCS/osisoft.sample-ocs-waveform-dotnet_rest_api?repoName=osisoft%2Fsample-ocs-waveform-dotnet_rest_api&branchName=main)](https://dev.azure.com/osieng/engineering/_build/latest?definitionId=2628&repoName=osisoft%2Fsample-ocs-waveform-dotnet_rest_api&branchName=main)
 
 Developed against DotNet 5.0.
 
@@ -293,7 +293,7 @@ RunInTryCatch(httpClient.DeleteAsync,($"api/{apiVersion}/Tenants/{tenantId}/Name
 
 Tested against DotNet 5.0.
 
-For the main OCS DotNet waveform samples page on master [ReadMe](https://github.com/osisoft/OSI-Samples-OCS/blob/master/docs/SDS_WAVEFORM_DOTNET_README.md)  
-For the main OCS waveform samples page on master [ReadMe](https://github.com/osisoft/OSI-Samples-OCS/blob/master/docs/SDS_WAVEFORM_README.md)  
-For the main OCS samples page on master [ReadMe](https://github.com/osisoft/OSI-Samples-OCS)  
-For the main OSIsoft samples page on master [ReadMe](https://github.com/osisoft/OSI-Samples)
+For the main OCS DotNet waveform samples page [ReadMe](https://github.com/osisoft/OSI-Samples-OCS/blob/main/docs/SDS_WAVEFORM_DOTNET_README.md)  
+For the main OCS waveform samples page [ReadMe](https://github.com/osisoft/OSI-Samples-OCS/blob/main/docs/SDS_WAVEFORM_README.md)  
+For the main OCS samples page [ReadMe](https://github.com/osisoft/OSI-Samples-OCS)  
+For the main OSIsoft samples page [ReadMe](https://github.com/osisoft/OSI-Samples)
