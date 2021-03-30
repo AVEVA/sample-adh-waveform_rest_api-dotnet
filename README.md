@@ -2,7 +2,7 @@
 
 **Version:** 1.1.9
 
-[![Build Status](https://dev.azure.com/osieng/engineering/_apis/build/status/product-readiness/OCS/osisoft.sample-ocs-waveform-dotnet_rest_api?repoName=osisoft%2Fsample-ocs-waveform-dotnet_rest_api&branchName=main)](https://dev.azure.com/osieng/engineering/_build/latest?definitionId=2628&repoName=osisoft%2Fsample-ocs-waveform-dotnet_rest_api&branchName=main)
+[![Build Status](https://dev.azure.com/osieng/engineering/_apis/build/status/product-readiness/OCS/osisoft.sample-ocs-waveform_rest_api-dotnet?repoName=osisoft%2Fsample-ocs-waveform_rest_api-dotnet&branchName=main)](https://dev.azure.com/osieng/engineering/_build/latest?definitionId=3093&repoName=osisoft%2Fsample-ocs-waveform_rest_api-dotnet&branchName=main)
 
 Developed against DotNet 5.0.
 
