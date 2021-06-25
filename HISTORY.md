@@ -1,5 +1,9 @@
 # Version History
 
+## 1.2.0 / 2021-06-25
+
+- Added steps for community features
+
 ## 1.1.10 / 2021-05-20
 
 - Updated dependencies
