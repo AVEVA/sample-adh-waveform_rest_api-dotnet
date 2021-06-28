@@ -649,6 +649,7 @@ namespace SdsRestApiCore
                         Console.WriteLine("Found community member Id:");
                         Console.WriteLine(role.Id);
 
+                        // share stream to community
                         Console.WriteLine();
                         Console.WriteLine("Sharing stream to community");
                         patch = new JsonPatchDocument();
