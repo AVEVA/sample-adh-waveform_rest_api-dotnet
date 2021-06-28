@@ -637,7 +637,7 @@ namespace SdsRestApiCore
                     if (!string.IsNullOrEmpty(communityId))
                     {
                         // Step 18
-                        // get tenant roles
+                        // getting tenant roles
                         Console.WriteLine("Getting tenant roles");
                         response = await httpClient.GetAsync(new Uri($"api/{apiVersion}/Tenants/{tenantId}/Roles", UriKind.Relative)).ConfigureAwait(false);
                         CheckIfResponseWasSuccessful(response);
@@ -649,7 +649,7 @@ namespace SdsRestApiCore
                         Console.WriteLine("Found community member Id:");
                         Console.WriteLine(role.Id);
 
-                        // share stream to community
+                        // sharing stream to community
                         Console.WriteLine();
                         Console.WriteLine("Sharing stream to community");
                         patch = new JsonPatchDocument();
