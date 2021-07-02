@@ -1,6 +1,6 @@
 # Sequential Data Store .NET REST API Sample
 
-**Version:** 1.1.10
+**Version:** 1.2.0
 
 [![Build Status](https://dev.azure.com/osieng/engineering/_apis/build/status/product-readiness/OCS/osisoft.sample-ocs-waveform_rest_api-dotnet?repoName=osisoft%2Fsample-ocs-waveform_rest_api-dotnet&branchName=main)](https://dev.azure.com/osieng/engineering/_build/latest?definitionId=3093&repoName=osisoft%2Fsample-ocs-waveform_rest_api-dotnet&branchName=main)
 
@@ -39,6 +39,7 @@ The SDS Service is secured by obtaining tokens from Azure Active Directory. Such
 ```json
 {
   "NamespaceId": "REPLACE_WITH_NAMESPACE_ID",
+  "CommunityId": "",
   "TenantId": "REPLACE_WITH_TENANT_ID",
   "Resource": "https://dat-b.osisoft.com",
   "ClientId": "REPLACE_WITH_APPLICATION_IDENTIFIER",
@@ -63,6 +64,12 @@ The TenantId and NamespaceId will be used in the constructing of the various API
 ```C#
 response = await httpClient.PostAsync($"api/{apiVersion}/Tenants/{tenantId}/Namespaces/{namespaceId}...
 ```
+
+### Community
+
+If you would like to see an example of basic interactions with an OCS community, enter an existing community id in the `CommunityId` field of the configuration. Make sure to also grant the appropriate "Community Member" role to the Client-Credentials Client used by the sample. If you have not yet created a community, see the [documentation](https://docs.osisoft.com/bundle/ocs/page/communities/create-a-community.html) for instructions. Entering a community id will enable three additional steps in the sample.
+
+If you are not using OCS communities, leave the `CommunityId` field blank.
 
 ## Create an SdsType
 
