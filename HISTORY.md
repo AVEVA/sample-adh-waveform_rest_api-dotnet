@@ -1,5 +1,9 @@
 # Version History
 
+## 1.2.2 / 2021-07-20
+
+- Cleaned up gitignore
+
 ## 1.2.1 / 2021-07-15
 
 - Updated dependencies
