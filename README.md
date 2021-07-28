@@ -1,6 +1,6 @@
 # Sequential Data Store .NET REST API Sample
 
-**Version:** 1.2.2
+**Version:** 1.2.3
 
 [![Build Status](https://dev.azure.com/osieng/engineering/_apis/build/status/product-readiness/OCS/osisoft.sample-ocs-waveform_rest_api-dotnet?repoName=osisoft%2Fsample-ocs-waveform_rest_api-dotnet&branchName=main)](https://dev.azure.com/osieng/engineering/_build/latest?definitionId=3093&repoName=osisoft%2Fsample-ocs-waveform_rest_api-dotnet&branchName=main)
 
