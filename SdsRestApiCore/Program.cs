@@ -33,7 +33,7 @@ namespace SdsRestApiCore
             string communityId = _configuration["CommunityId"];
             string resource = _configuration["Resource"];
             string clientId = _configuration["ClientId"];
-            string clientKey = _configuration["ClientKey"];
+            string clientSecret = _configuration["ClientSecret"];
             string apiVersion = _configuration["ApiVersion"];
 
             // ==== Metadata IDs ====
@@ -48,7 +48,7 @@ namespace SdsRestApiCore
             string streamIdCompound = "SampleStream_Compound";
 
             // Step 1
-            _securityHandler = new SdsSecurityHandler(resource, clientId, clientKey);
+            _securityHandler = new SdsSecurityHandler(resource, clientId, clientSecret);
             using (var httpClient = new HttpClient(_securityHandler) { BaseAddress = new Uri(resource) })
             {
                 httpClient.DefaultRequestHeaders.Add("Accept-Encoding", "gzip");
