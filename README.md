@@ -1,14 +1,17 @@
 # Sequential Data Store .NET REST API Sample
 
-**Version:** 1.2.7
+| :loudspeaker: **Notice**: Samples have been updated to reflect that they work on AVEVA Data Hub. The samples also work on OSIsoft Cloud Services unless otherwise noted. |
+| -----------------------------------------------------------------------------------------------|  
 
-[![Build Status](https://dev.azure.com/osieng/engineering/_apis/build/status/product-readiness/OCS/osisoft.sample-ocs-waveform_rest_api-dotnet?repoName=osisoft%2Fsample-ocs-waveform_rest_api-dotnet&branchName=main)](https://dev.azure.com/osieng/engineering/_build/latest?definitionId=3093&repoName=osisoft%2Fsample-ocs-waveform_rest_api-dotnet&branchName=main)
+**Version:** 1.2.8
+
+[![Build Status](https://dev.azure.com/osieng/engineering/_apis/build/status/product-readiness/ADH/aveva.sample-adh-waveform_rest_api-dotnet?branchName=main)](https://dev.azure.com/osieng/engineering/_build/latest?definitionId=3093&branchName=main)
 
 Developed against DotNet 5.0.
 
 ## Building a Client with the rest calls directly
 
-The sample does not makes use of the OSIsoft Cloud Services Client Libraries. When working in .NET, it is generally recommended that you use the OCS Client Libraries metapackage, OSIsoft.OCSClients. The metapackage is a NuGet package available from [https://api.nuget.org/v3/index.json](https://api.nuget.org/v3/index.json). The libraries offer a framework of classes that make client development easier.
+The sample does not makes use of the AVEVA Data Hub Client Libraries. When working in .NET, it is generally recommended that you use the ADH Client Libraries metapackage, OSIsoft.OCSClients. The metapackage is a NuGet package available from [https://api.nuget.org/v3/index.json](https://api.nuget.org/v3/index.json). The libraries offer a framework of classes that make client development easier.
 
 [SDS documentation](https://ocs-docs.osisoft.com/Content_Portal/Documentation/SequentialDataStore/Data_Store_and_SDS.html)
 
@@ -34,14 +37,14 @@ dotnet test
 
 The sample is configured using the file [appsettings.placeholder.json](SdsRestApiCore/appsettings.placeholder.json). Before editing, rename this file to `appsettings.json`. This repository's `.gitignore` rules should prevent the file from ever being checked in to any fork or branch, to ensure credentials are not compromised.
 
-The SDS Service is secured by obtaining tokens from Azure Active Directory. Such clients provide a client Id and an associated secret (or key) that are authenticated against the directory. You must replace the placeholders in your `appsettings.json` file with the authentication-related values you received from OSIsoft.
+The SDS Service is secured by obtaining tokens from Azure Active Directory. Such clients provide a client Id and an associated secret (or key) that are authenticated against the directory. You must replace the placeholders in your `appsettings.json` file with the authentication-related values you received from AVEVA.
 
 ```json
 {
   "NamespaceId": "PLACEHOLDER_REPLACE_WITH_NAMESPACE_ID",
   "CommunityId": "",
   "TenantId": "PLACEHOLDER_REPLACE_WITH_TENANT_ID",
-  "Resource": "https://dat-b.osisoft.com",
+  "Resource": "https://uswe.datahub.connect.aveva.com",
   "ClientId": "PLACEHOLDER_REPLACE_WITH_CLIENT_ID",
   "ClientSecret": "PLACEHOLDER_REPLACE_WITH_CLIENT_SECRET"
 }
@@ -67,9 +70,9 @@ response = await httpClient.PostAsync($"api/{apiVersion}/Tenants/{tenantId}/Name
 
 ### Community
 
-If you would like to see an example of basic interactions with an OCS community, enter an existing community id in the `CommunityId` field of the configuration. Make sure to also grant the appropriate "Community Member" role to the Client-Credentials Client used by the sample. If you have not yet created a community, see the [documentation](https://docs.osisoft.com/bundle/ocs/page/communities/create-a-community.html) for instructions. Entering a community id will enable three additional steps in the sample.
+If you would like to see an example of basic interactions with an ADH community, enter an existing community id in the `CommunityId` field of the configuration. Make sure to also grant the appropriate "Community Member" role to the Client-Credentials Client used by the sample. If you have not yet created a community, see the [documentation](https://docs.osisoft.com/bundle/ocs/page/communities/create-a-community.html) for instructions. Entering a community id will enable three additional steps in the sample.
 
-If you are not using OCS communities, leave the `CommunityId` field blank.
+If you are not using ADH communities, leave the `CommunityId` field blank.
 
 ## Create an SdsType
 
@@ -300,7 +303,7 @@ RunInTryCatch(httpClient.DeleteAsync,($"api/{apiVersion}/Tenants/{tenantId}/Name
 
 Tested against DotNet 5.0.
 
-For the main OCS DotNet waveform samples page [ReadMe](https://github.com/osisoft/OSI-Samples-OCS/blob/main/docs/SDS_WAVEFORM_DOTNET.md)  
-For the main OCS waveform samples page [ReadMe](https://github.com/osisoft/OSI-Samples-OCS/blob/main/docs/SDS_WAVEFORM.md)  
-For the main OCS samples page [ReadMe](https://github.com/osisoft/OSI-Samples-OCS)  
-For the main OSIsoft samples page [ReadMe](https://github.com/osisoft/OSI-Samples)
+For the main ADH DotNet waveform samples page [ReadMe](https://github.com/osisoft/OSI-Samples-OCS/blob/main/docs/SDS_WAVEFORM_DOTNET.md)  
+For the main ADH waveform samples page [ReadMe](https://github.com/osisoft/OSI-Samples-OCS/blob/main/docs/SDS_WAVEFORM.md)  
+For the main ADH samples page [ReadMe](https://github.com/osisoft/OSI-Samples-OCS)  
+For the main AVEVA samples page [ReadMe](https://github.com/osisoft/OSI-Samples)
