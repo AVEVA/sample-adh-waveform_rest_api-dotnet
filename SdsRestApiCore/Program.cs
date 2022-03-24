@@ -37,15 +37,15 @@ namespace SdsRestApiCore
             string apiVersion = _configuration["ApiVersion"];
 
             // ==== Metadata IDs ====
-            string streamId = "WaveStreamId";
-            string typeId = "WaveDataTypeId";
-            string targetTypeId = "WaveDataTargetTypeId";
-            string targetIntTypeId = "WaveDataTargetIntTypeId";
-            string autoStreamViewId = "WaveDataAutoStreamViewId";
-            string manualStreamViewId = "WaveDataManualStreamViewId";
-            string compoundTypeId = "SampleType_Compound";
-            string streamIdSecondary = "SampleStream_Secondary";
-            string streamIdCompound = "SampleStream_Compound";
+            string streamId = "WaveStreamId_RestAPIDotnet";
+            string typeId = "WaveDataTypeId_RestAPIDotnet";
+            string targetTypeId = "WaveDataTargetTypeId_RestAPIDotnet";
+            string targetIntTypeId = "WaveDataTargetIntTypeId_RestAPIDotnet";
+            string autoStreamViewId = "WaveDataAutoStreamViewId_RestAPIDotnet";
+            string manualStreamViewId = "WaveDataManualStreamViewId_RestAPIDotnet";
+            string compoundTypeId = "SampleType_Compound_RestAPIDotnet";
+            string streamIdSecondary = "SampleStream_Secondary_RestAPIDotnet";
+            string streamIdCompound = "SampleStream_Compound_RestAPIDotnet";
 
             // Step 1
             _securityHandler = new SdsSecurityHandler(resource, clientId, clientSecret);
