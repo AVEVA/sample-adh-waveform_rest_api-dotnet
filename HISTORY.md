@@ -1,5 +1,9 @@
 # Version History
 
+## 1.2.11 / 2022-04-15
+
+- Replaced var with explicit types
+
 ## 1.2.10 / 2022-03-25
 
 - Use language specific Ids
