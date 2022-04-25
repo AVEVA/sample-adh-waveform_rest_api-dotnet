@@ -49,7 +49,7 @@ namespace SdsRestApiCore
 
             // Step 1
             _securityHandler = new SdsSecurityHandler(resource, clientId, clientSecret);
-            using (var httpClient = new HttpClient(_securityHandler) { BaseAddress = new Uri(resource) })
+            using (HttpClient httpClient = new (_securityHandler) { BaseAddress = new Uri(resource) })
             {
                 httpClient.DefaultRequestHeaders.Add("Accept-Encoding", "gzip");
 
@@ -72,7 +72,7 @@ namespace SdsRestApiCore
                     Console.WriteLine("Creating an SdsType");
                     Console.WriteLine(clientId);
                     SdsType waveType = BuildWaveDataType(typeId);
-                    using var content2 = new StringContent(JsonConvert.SerializeObject(waveType));
+                    using StringContent content2 = new (JsonConvert.SerializeObject(waveType));
                     HttpResponseMessage response =
                         await httpClient.PostAsync(
                             new Uri($"api/{apiVersion}/Tenants/{tenantId}/Namespaces/{namespaceId}/Types/{waveType.Id}", UriKind.Relative),
@@ -83,13 +83,13 @@ namespace SdsRestApiCore
                     // Step 3
                     // create a SdsStream
                     Console.WriteLine("Creating an SdsStream");
-                    var waveStream = new SdsStream
+                    SdsStream waveStream = new ()
                     {
                         Id = streamId,
                         Name = "WaveStream",
                         TypeId = waveType.Id,
                     };
-                    using var content3 = new StringContent(JsonConvert.SerializeObject(waveStream));
+                    using StringContent content3 = new (JsonConvert.SerializeObject(waveStream));
                     response = await httpClient.PostAsync(
                         new Uri($"api/{apiVersion}/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{waveStream.Id}", UriKind.Relative),
                         content3)
@@ -101,10 +101,10 @@ namespace SdsRestApiCore
                     Console.WriteLine("Inserting data");
 
                     // insert a single event
-                    var singleWaveList = new List<WaveData>();
+                    List<WaveData> singleWaveList = new ();
                     WaveData wave = GetWave(0, 2.0);
                     singleWaveList.Add(wave);
-                    using var content4a = new StringContent(JsonConvert.SerializeObject(singleWaveList));
+                    using StringContent content4a = new (JsonConvert.SerializeObject(singleWaveList));
                     response = await httpClient.PostAsync(
                         new Uri($"api/{apiVersion}/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{waveStream.Id}/Data", UriKind.Relative),
                         content4a)
@@ -112,14 +112,14 @@ namespace SdsRestApiCore
                     CheckIfResponseWasSuccessful(response);
 
                     // insert a list of events
-                    var waves = new List<WaveData>();
+                    List<WaveData> waves = new ();
                     for (int i = 2; i < 20; i += 2)
                     {
                         WaveData newEvent = GetWave(i, 2.0);
                         waves.Add(newEvent);
                     }
 
-                    using var content4b = new StringContent(JsonConvert.SerializeObject(waves));
+                    using StringContent content4b = new (JsonConvert.SerializeObject(waves));
                     response = await httpClient.PostAsync(
                         new Uri($"api/{apiVersion}/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{waveStream.Id}/Data", UriKind.Relative),
                         content4b)
@@ -147,10 +147,10 @@ namespace SdsRestApiCore
                         new Uri($"api/{apiVersion}/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{waveStream.Id}/Data?startIndex=0&endIndex={waves[^1].Order}", UriKind.Relative))
                         .ConfigureAwait(false);
                     CheckIfResponseWasSuccessful(response);
-                    var retrievedList =
+                    List<WaveData> retrievedList =
                         JsonConvert.DeserializeObject<List<WaveData>>(await response.Content.ReadAsStringAsync().ConfigureAwait(false));
                     Console.WriteLine($"Total events found: {retrievedList.Count}");
-                    foreach (var evnt in retrievedList)
+                    foreach (WaveData evnt in retrievedList)
                     {
                         Console.WriteLine(evnt.ToString());
                     }
@@ -173,16 +173,16 @@ namespace SdsRestApiCore
                     Console.WriteLine("Updating events");
 
                     // update one event
-                    var updateEvent = retrieved;
+                    WaveData updateEvent = retrieved;
                     updateEvent.Sin = 1 / 2.0;
                     updateEvent.Cos = Math.Sqrt(3) / 2;
                     updateEvent.Tan = 1;
-                    var updateWave = new List<WaveData>
+                    List<WaveData> updateWave = new ()
                     {
                         updateEvent,
                     };
 
-                    using var content7a = new StringContent(JsonConvert.SerializeObject(updateWave));
+                    using StringContent content7a = new (JsonConvert.SerializeObject(updateWave));
                     response = await httpClient.PutAsync(
                         new Uri($"api/{apiVersion}/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{waveStream.Id}/Data", UriKind.Relative),
                         content7a)
@@ -190,14 +190,14 @@ namespace SdsRestApiCore
                     CheckIfResponseWasSuccessful(response);
 
                     // update all events, adding ten more
-                    var updateWaves = new List<WaveData>();
+                    List<WaveData> updateWaves = new ();
                     for (int i = 0; i < 40; i += 2)
                     {
                         WaveData newEvent = GetWave(i, 4.0);
                         updateWaves.Add(newEvent);
                     }
 
-                    using var content7b = new StringContent(JsonConvert.SerializeObject(updateWaves));
+                    using StringContent content7b = new (JsonConvert.SerializeObject(updateWaves));
                     response = await httpClient.PutAsync(
                         new Uri($"api/{apiVersion}/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{waveStream.Id}/Data", UriKind.Relative),
                         content7b)
@@ -211,7 +211,7 @@ namespace SdsRestApiCore
                     retrievedList =
                         JsonConvert.DeserializeObject<List<WaveData>>(await response.Content.ReadAsStringAsync().ConfigureAwait(false));
                     Console.WriteLine($"Total events found: {retrievedList.Count}");
-                    foreach (var evnt in retrievedList)
+                    foreach (WaveData evnt in retrievedList)
                     {
                         Console.WriteLine(evnt.ToString());
                     }
@@ -223,11 +223,11 @@ namespace SdsRestApiCore
                     Console.WriteLine("Replacing events");
 
                     // replace one event
-                    var replaceSingleWaveList = new List<WaveData>();
-                    var replaceEvent = GetWave(order: 0, multiplier: 5.0);
+                    List<WaveData> replaceSingleWaveList = new ();
+                    WaveData replaceEvent = GetWave(order: 0, multiplier: 5.0);
                     replaceSingleWaveList.Add(replaceEvent);
 
-                    using var content8a = new StringContent(JsonConvert.SerializeObject(replaceSingleWaveList));
+                    using StringContent content8a = new (JsonConvert.SerializeObject(replaceSingleWaveList));
                     response = await httpClient.PutAsync(
                         new Uri($"api/{apiVersion}/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{waveStream.Id}/Data?allowCreate=false", UriKind.Relative),
                         content8a)
@@ -235,13 +235,13 @@ namespace SdsRestApiCore
                     CheckIfResponseWasSuccessful(response);
 
                     // replace all events
-                    var replaceEvents = retrievedList;
+                    List<WaveData> replaceEvents = retrievedList;
                     for (int i = 1; i < replaceEvents.Count; i++)
                     {
                         replaceEvents[i] = GetWave(order: i * 2, multiplier: 5.0);
                     }
 
-                    using var content8b = new StringContent(JsonConvert.SerializeObject(replaceEvents));
+                    using StringContent content8b = new (JsonConvert.SerializeObject(replaceEvents));
                     response = await httpClient.PutAsync(
                         new Uri($"api/{apiVersion}/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{waveStream.Id}/Data?allowCreate=false", UriKind.Relative),
                         content8b)
@@ -256,7 +256,7 @@ namespace SdsRestApiCore
                     retrievedList =
                         JsonConvert.DeserializeObject<List<WaveData>>(await response.Content.ReadAsStringAsync().ConfigureAwait(false));
                     Console.WriteLine($"Total events found: {retrievedList.Count}");
-                    foreach (var evnt in retrievedList)
+                    foreach (WaveData evnt in retrievedList)
                     {
                         Console.WriteLine(evnt.ToString());
                     }
@@ -273,10 +273,10 @@ namespace SdsRestApiCore
                         new Uri($"api/{apiVersion}/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{waveStream.Id}/Data/Transform?startIndex={1}&count={3}&boundaryType={SdsBoundaryType.ExactOrCalculated}", UriKind.Relative))
                         .ConfigureAwait(false);
                     CheckIfResponseWasSuccessful(response);
-                    var rangeValuesContinuous =
+                    List<WaveData> rangeValuesContinuous =
                         JsonConvert.DeserializeObject<List<WaveData>>(await response.Content.ReadAsStringAsync().ConfigureAwait(false));
                     Console.WriteLine("Default (Continuous) stream read behavior, requesting data starting at index location '1', SDS will interpolate this value:");
-                    foreach (var waveData in rangeValuesContinuous)
+                    foreach (WaveData waveData in rangeValuesContinuous)
                     {
                         Console.WriteLine($"Order: {waveData.Order}, Radians: {waveData.Radians}, Cos: {waveData.Cos}");
                     }
@@ -289,10 +289,10 @@ namespace SdsRestApiCore
                     response = await httpClient.GetAsync(
                         new Uri($"api/{apiVersion}/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{waveStream.Id}/Data?startIndex={updateWaves[0].Order}&endIndex={updateWaves[^1].Order}&filter=Radians lt 50", UriKind.Relative))
                         .ConfigureAwait(false);
-                    var retrievedFilteredList =
+                    List<WaveData> retrievedFilteredList =
                         JsonConvert.DeserializeObject<List<WaveData>>(await response.Content.ReadAsStringAsync().ConfigureAwait(false));
                     Console.WriteLine($"Total events found: {retrievedFilteredList.Count}");
-                    foreach (var evnt in retrievedFilteredList)
+                    foreach (WaveData evnt in retrievedFilteredList)
                     {
                         Console.WriteLine(evnt.ToString());
                     }
@@ -306,9 +306,9 @@ namespace SdsRestApiCore
                     response = await httpClient.GetAsync(
                         new Uri($"api/{apiVersion}/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{waveStream.Id}/Data/Sampled?startIndex={updateWaves[0].Order}&endIndex={updateWaves[^1].Order}&intervals={4}&sampleBy={nameof(WaveData.Sin)}", UriKind.Relative))
                         .ConfigureAwait(false);
-                    var retrievedSamples =
+                    List<WaveData> retrievedSamples =
                         JsonConvert.DeserializeObject<List<WaveData>>(await response.Content.ReadAsStringAsync().ConfigureAwait(false));
-                    foreach (var sample in retrievedSamples)
+                    foreach (WaveData sample in retrievedSamples)
                     {
                         Console.WriteLine(sample);
                     }
@@ -317,16 +317,16 @@ namespace SdsRestApiCore
 
                     // Step 12
                     // Create a Discrete stream PropertyOverride indicating that we do not want Sds to calculate a value for Radians and update our stream
-                    var propertyOverride = new SdsStreamPropertyOverride
+                    SdsStreamPropertyOverride propertyOverride = new ()
                     {
                         SdsTypePropertyId = "Radians",
                         InterpolationMode = SdsInterpolationMode.Discrete,
                     };
 
-                    var propertyOverrides = new List<SdsStreamPropertyOverride>() { propertyOverride };
+                    List<SdsStreamPropertyOverride> propertyOverrides = new () { propertyOverride };
 
                     // update the stream
-                    using var content12 = new StringContent(JsonConvert.SerializeObject(waveStream));
+                    using StringContent content12 = new (JsonConvert.SerializeObject(waveStream));
                     waveStream.PropertyOverrides = propertyOverrides;
                     response = await httpClient.PutAsync(
                         new Uri($"api/{apiVersion}/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{waveStream.Id}", UriKind.Relative),
@@ -340,9 +340,9 @@ namespace SdsRestApiCore
                         new Uri($"api/{apiVersion}/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{waveStream.Id}/Data/Transform?startIndex={1}&count={3}&boundaryType={SdsBoundaryType.ExactOrCalculated}", UriKind.Relative))
                         .ConfigureAwait(false);
                     CheckIfResponseWasSuccessful(response);
-                    var rangeValuesDiscrete =
+                    List<WaveData> rangeValuesDiscrete =
                         JsonConvert.DeserializeObject<List<WaveData>>(await response.Content.ReadAsStringAsync().ConfigureAwait(false));
-                    foreach (var waveData in rangeValuesDiscrete)
+                    foreach (WaveData waveData in rangeValuesDiscrete)
                     {
                         Console.WriteLine($"Order: {waveData.Order}, Radians: {waveData.Radians}, Cos: {waveData.Cos}");
                     }
@@ -354,10 +354,10 @@ namespace SdsRestApiCore
                     Console.WriteLine("SdsStreamViews");
 
                     // create target types
-                    var targetType = BuildWaveDataTargetType(targetTypeId);
-                    var targetIntType = BuildWaveDataTargetIntType(targetIntTypeId);
+                    SdsType targetType = BuildWaveDataTargetType(targetTypeId);
+                    SdsType targetIntType = BuildWaveDataTargetIntType(targetIntTypeId);
 
-                    using var content13a = new StringContent(JsonConvert.SerializeObject(targetType));
+                    using StringContent content13a = new (JsonConvert.SerializeObject(targetType));
                     HttpResponseMessage targetTypeResponse = await httpClient.PostAsync(
                         new Uri($"api/{apiVersion}/Tenants/{tenantId}/Namespaces/{namespaceId}/Types/{targetTypeId}", UriKind.Relative),
                         content13a)
@@ -367,7 +367,7 @@ namespace SdsRestApiCore
                         throw new HttpRequestException(response.ToString());
                     }
 
-                    using var content13b = new StringContent(JsonConvert.SerializeObject(targetIntType));
+                    using StringContent content13b = new (JsonConvert.SerializeObject(targetIntType));
                     HttpResponseMessage targetIntTypeResponse = await httpClient.PostAsync(
                         new Uri($"api/{apiVersion}/Tenants/{tenantId}/Namespaces/{namespaceId}/Types/{targetIntTypeId}", UriKind.Relative),
                         content13b)
@@ -378,7 +378,7 @@ namespace SdsRestApiCore
                     }
 
                     // create StreamViews
-                    var autoStreamView = new SdsStreamView()
+                    SdsStreamView autoStreamView = new ()
                     {
                         Id = autoStreamViewId,
                         SourceTypeId = typeId,
@@ -386,12 +386,12 @@ namespace SdsRestApiCore
                     };
 
                     // create explicit mappings 
-                    var vp1 = new SdsStreamViewProperty() { SourceId = "Order", TargetId = "OrderTarget" };
-                    var vp2 = new SdsStreamViewProperty() { SourceId = "Sin", TargetId = "SinInt" };
-                    var vp3 = new SdsStreamViewProperty() { SourceId = "Cos", TargetId = "CosInt" };
-                    var vp4 = new SdsStreamViewProperty() { SourceId = "Tan", TargetId = "TanInt" };
+                    SdsStreamViewProperty vp1 = new () { SourceId = "Order", TargetId = "OrderTarget" };
+                    SdsStreamViewProperty vp2 = new () { SourceId = "Sin", TargetId = "SinInt" };
+                    SdsStreamViewProperty vp3 = new () { SourceId = "Cos", TargetId = "CosInt" };
+                    SdsStreamViewProperty vp4 = new () { SourceId = "Tan", TargetId = "TanInt" };
 
-                    var manualStreamView = new SdsStreamView()
+                    SdsStreamView manualStreamView = new ()
                     {
                         Id = manualStreamViewId,
                         SourceTypeId = typeId,
@@ -399,14 +399,14 @@ namespace SdsRestApiCore
                         Properties = new List<SdsStreamViewProperty>() { vp1, vp2, vp3, vp4 },
                     };
 
-                    using var content13c = new StringContent(JsonConvert.SerializeObject(autoStreamView));
+                    using StringContent content13c = new (JsonConvert.SerializeObject(autoStreamView));
                     response = await httpClient.PostAsync(
                         new Uri($"api/{apiVersion}/Tenants/{tenantId}/Namespaces/{namespaceId}/StreamViews/{autoStreamViewId}", UriKind.Relative),
                         content13c)
                         .ConfigureAwait(false);
                     CheckIfResponseWasSuccessful(response);
 
-                    using var content13d = new StringContent(JsonConvert.SerializeObject(manualStreamView));
+                    using StringContent content13d = new (JsonConvert.SerializeObject(manualStreamView));
                     response = await httpClient.PostAsync(
                         new Uri($"api/{apiVersion}/Tenants/{tenantId}/Namespaces/{namespaceId}/StreamViews/{manualStreamViewId}", UriKind.Relative),
                         content13d)
@@ -414,7 +414,7 @@ namespace SdsRestApiCore
                     CheckIfResponseWasSuccessful(response);
 
                     Console.WriteLine("Here is some of our data as it is stored on the server:");
-                    foreach (var evnt in rangeValuesDiscrete)
+                    foreach (WaveData evnt in rangeValuesDiscrete)
                     {
                         Console.WriteLine($"Sin: {evnt.Sin}, Cos: {evnt.Cos}, Tan {evnt.Tan}");
                     }
@@ -433,7 +433,7 @@ namespace SdsRestApiCore
 
                     Console.WriteLine("Specifying a StreamView with a SdsType of the same shape returns values that are automatically mapped to the target SdsType's properties:");
 
-                    foreach (var value in autoStreamViewData)
+                    foreach (WaveDataTarget value in autoStreamViewData)
                     {
                         Console.WriteLine($"SinTarget: {value.SinTarget} CosTarget: {value.CosTarget} TanTarget: {value.TanTarget}");
                     }
@@ -452,7 +452,7 @@ namespace SdsRestApiCore
                     List<WaveDataInteger> manualStreamViewData =
                         JsonConvert.DeserializeObject<List<WaveDataInteger>>(await response.Content.ReadAsStringAsync().ConfigureAwait(false));
 
-                    foreach (var value in manualStreamViewData)
+                    foreach (WaveDataInteger value in manualStreamViewData)
                     {
                         Console.WriteLine($"SinInt: {value.SinInt} CosInt: {value.CosInt} TanInt: {value.TanInt}");
                     }
@@ -529,17 +529,17 @@ namespace SdsRestApiCore
                     // Step 16
                     // tags and metadata
                     Console.WriteLine("Let's add some Tags and Metadata to our stream:");
-                    var tags = new List<string> { "waves", "periodic", "2018", "validated" };
-                    var metadata = new Dictionary<string, string>() { { "Region", "North America" }, { "Country", "Canada" }, { "Province", "Quebec" } };
+                    List<string> tags = new () { "waves", "periodic", "2018", "validated" };
+                    Dictionary<string, string> metadata = new () { { "Region", "North America" }, { "Country", "Canada" }, { "Province", "Quebec" } };
 
-                    using var content16a = new StringContent(JsonConvert.SerializeObject(tags));
+                    using StringContent content16a = new (JsonConvert.SerializeObject(tags));
                     response = await httpClient.PutAsync(
                         new Uri($"api/{apiVersion}/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{streamId}/Tags", UriKind.Relative),
                         content16a)
                         .ConfigureAwait(false);
                     CheckIfResponseWasSuccessful(response);
 
-                    using var content16b = new StringContent(JsonConvert.SerializeObject(metadata));
+                    using StringContent content16b = new (JsonConvert.SerializeObject(metadata));
                     response = await httpClient.PutAsync(
                         new Uri($"api/{apiVersion}/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{streamId}/Metadata", UriKind.Relative),
                         content16b)
@@ -555,7 +555,7 @@ namespace SdsRestApiCore
 
                     Console.WriteLine();
                     Console.WriteLine($"Tags now associated with {streamId}:");
-                    foreach (var tag in tags)
+                    foreach (string tag in tags)
                     {
                         Console.WriteLine(tag);
                     }
@@ -568,21 +568,21 @@ namespace SdsRestApiCore
                         .ConfigureAwait(false);
                     CheckIfResponseWasSuccessful(response);
 
-                    var region = JsonConvert.DeserializeObject<string>(await response.Content.ReadAsStringAsync().ConfigureAwait(false));
+                    string region = JsonConvert.DeserializeObject<string>(await response.Content.ReadAsStringAsync().ConfigureAwait(false));
 
                     response = await httpClient.GetAsync(
                         new Uri($"api/{apiVersion}/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{streamId}/Metadata/Country", UriKind.Relative))
                         .ConfigureAwait(false);
                     CheckIfResponseWasSuccessful(response);
 
-                    var country = JsonConvert.DeserializeObject<string>(await response.Content.ReadAsStringAsync().ConfigureAwait(false));
+                    string country = JsonConvert.DeserializeObject<string>(await response.Content.ReadAsStringAsync().ConfigureAwait(false));
 
                     response = await httpClient.GetAsync(
                         new Uri($"api/{apiVersion}/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{streamId}/Metadata/Province", UriKind.Relative))
                         .ConfigureAwait(false);
                     CheckIfResponseWasSuccessful(response);
 
-                    var province = JsonConvert.DeserializeObject<string>(await response.Content.ReadAsStringAsync().ConfigureAwait(false));
+                    string province = JsonConvert.DeserializeObject<string>(await response.Content.ReadAsStringAsync().ConfigureAwait(false));
 
                     Console.WriteLine("Metadata key Region: " + region);
                     Console.WriteLine("Metadata key Country: " + country);
@@ -592,12 +592,12 @@ namespace SdsRestApiCore
                     // Step 17
                     // update metadata
                     Console.WriteLine("Let's make some changes to the Metadata on our stream:");
-                    var patch = new JsonPatchDocument();
+                    JsonPatchDocument patch = new ();
                     patch.Remove("Region");
                     patch.Replace("Province", "Ontario");
                     patch.Add("City", "Toronto");
 
-                    using var content17 = new StringContent(JsonConvert.SerializeObject(patch));
+                    using StringContent content17 = new (JsonConvert.SerializeObject(patch));
                     response = await httpClient.PatchAsync(
                         new Uri($"api/{apiVersion}/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{streamId}/Metadata", UriKind.Relative),
                         content17)
@@ -626,7 +626,7 @@ namespace SdsRestApiCore
                         .ConfigureAwait(false);
                     CheckIfResponseWasSuccessful(response);
 
-                    var city = JsonConvert.DeserializeObject<string>(await response.Content.ReadAsStringAsync().ConfigureAwait(false));
+                    string city = JsonConvert.DeserializeObject<string>(await response.Content.ReadAsStringAsync().ConfigureAwait(false));
 
                     Console.WriteLine("Metadata key Country: " + country);
                     Console.WriteLine("Metadata key Province: " + province);
@@ -642,9 +642,9 @@ namespace SdsRestApiCore
                         response = await httpClient.GetAsync(new Uri($"api/{apiVersion}/Tenants/{tenantId}/Roles", UriKind.Relative)).ConfigureAwait(false);
                         CheckIfResponseWasSuccessful(response);
 
-                        var rolesList = JsonConvert.DeserializeObject<List<Role>>(await response.Content.ReadAsStringAsync().ConfigureAwait(false));
+                        List<Role> rolesList = JsonConvert.DeserializeObject<List<Role>>(await response.Content.ReadAsStringAsync().ConfigureAwait(false));
 
-                        var role = rolesList.Single((r) => r.RoleTypeId == CommunityMemberRoleTypeId && r.CommunityId == communityId);
+                        Role role = rolesList.Single((r) => r.RoleTypeId == CommunityMemberRoleTypeId && r.CommunityId == communityId);
 
                         Console.WriteLine("Found community member Id:");
                         Console.WriteLine(role.Id);
@@ -653,7 +653,7 @@ namespace SdsRestApiCore
                         Console.WriteLine();
                         Console.WriteLine("Sharing stream to community");
                         patch = new JsonPatchDocument();
-                        var entry = new RoleTrusteeAccessControlEntry()
+                        RoleTrusteeAccessControlEntry entry = new ()
                         {
                             AccessRights = 1,
                             AccessType = 0,
@@ -664,7 +664,7 @@ namespace SdsRestApiCore
                             },
                         };
                         patch.Add("/RoleTrusteeAccessControlEntries/-", entry);
-                        using var content18 = new StringContent(JsonConvert.SerializeObject(patch));
+                        using StringContent content18 = new (JsonConvert.SerializeObject(patch));
                         response = await httpClient.PatchAsync(new Uri($"api/{apiVersion}/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{streamId}/AccessControl", UriKind.Relative), content18).ConfigureAwait(false);
                         CheckIfResponseWasSuccessful(response);
 
@@ -675,9 +675,9 @@ namespace SdsRestApiCore
                         response = await httpClient.GetAsync(new Uri($"api/{apiVersion}-preview/Tenants/{tenantId}/Search/Communities/{communityId}/Streams?query={streamId}", UriKind.Relative)).ConfigureAwait(false);
                         CheckIfResponseWasSuccessful(response);
 
-                        var streamsList = JsonConvert.DeserializeObject<List<StreamSearchResult>>(await response.Content.ReadAsStringAsync().ConfigureAwait(false));
+                        List<StreamSearchResult> streamsList = JsonConvert.DeserializeObject<List<StreamSearchResult>>(await response.Content.ReadAsStringAsync().ConfigureAwait(false));
                         Console.WriteLine("Found matching streams");
-                        foreach (var stream in streamsList)
+                        foreach (StreamSearchResult stream in streamsList)
                         {
                             Console.WriteLine(stream.Id);
                         }
@@ -686,11 +686,11 @@ namespace SdsRestApiCore
                         // getting stream data from the community stream
                         Console.WriteLine();
                         Console.WriteLine("Getting stream data from the community stream");
-                        var communityStream = streamsList[0];
+                        StreamSearchResult communityStream = streamsList[0];
                         response = await httpClient.GetAsync(new Uri(communityStream.Self + "/Data/Last", UriKind.Absolute)).ConfigureAwait(false);
                         CheckIfResponseWasSuccessful(response);
 
-                        var last =
+                        WaveData last =
                             JsonConvert.DeserializeObject<WaveData>(await response.Content.ReadAsStringAsync().ConfigureAwait(false));
 
                         Console.WriteLine("Retrieved last value");
@@ -725,12 +725,12 @@ namespace SdsRestApiCore
                     // Step 22
                     Console.WriteLine("Creating a SdsStream with secondary index");
 
-                    var measurementIndex = new SdsStreamIndex()
+                    SdsStreamIndex measurementIndex = new ()
                     {
                         SdsTypePropertyId = waveType.Properties.First(p => p.Id.Equals("Radians", StringComparison.OrdinalIgnoreCase)).Id,
                     };
 
-                    var waveStreamSecond = new SdsStream
+                    SdsStream waveStreamSecond = new ()
                     {
                         Id = streamIdSecondary,
                         Name = "WaveStream_Secondary",
@@ -741,7 +741,7 @@ namespace SdsRestApiCore
                         },
                     };
 
-                    using var content18a = new StringContent(JsonConvert.SerializeObject(waveStreamSecond));
+                    using StringContent content18a = new (JsonConvert.SerializeObject(waveStreamSecond));
                     response = await httpClient.PostAsync(
                         new Uri($"api/{apiVersion}/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{waveStreamSecond.Id}", UriKind.Relative),
                         content18a)
@@ -781,7 +781,7 @@ namespace SdsRestApiCore
 
                     waveStream.Indexes = new List<SdsStreamIndex>() { measurementIndex };
 
-                    using var content18b = new StringContent(JsonConvert.SerializeObject(waveStream));
+                    using StringContent content18b = new (JsonConvert.SerializeObject(waveStream));
                     response = await httpClient.PutAsync(
                         new Uri($"api/{apiVersion}/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{waveStream.Id}", UriKind.Relative),
                         content18b)
@@ -797,7 +797,7 @@ namespace SdsRestApiCore
 
                     waveStreamSecond.Indexes = null;
 
-                    using var content18c = new StringContent(JsonConvert.SerializeObject(waveStreamSecond));
+                    using StringContent content18c = new (JsonConvert.SerializeObject(waveStreamSecond));
                     response = await httpClient.PutAsync(
                         new Uri($"api/{apiVersion}/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{waveStreamSecond.Id}", UriKind.Relative),
                         content18c)
@@ -809,13 +809,13 @@ namespace SdsRestApiCore
                     CheckIfResponseWasSuccessful(response);
                     waveStreamSecond = JsonConvert.DeserializeObject<SdsStream>(await response.Content.ReadAsStringAsync().ConfigureAwait(false));
 
-                    var count = 0;
+                    int count = 0;
                     if (waveStream.Indexes != null)
                     {
                         count = waveStream.Indexes.Count;
                     }
 
-                    var count2 = 0;
+                    int count2 = 0;
                     if (waveStreamSecond.Indexes != null)
                     {
                         count2 = waveStreamSecond.Indexes.Count;
@@ -828,7 +828,7 @@ namespace SdsRestApiCore
                     Console.WriteLine("Creating a SdsType with a compound index");
                     SdsType waveCompound = BuildWaveDataCompoundType(compoundTypeId);
 
-                    using var content19a = new StringContent(JsonConvert.SerializeObject(waveCompound));
+                    using StringContent content19a = new (JsonConvert.SerializeObject(waveCompound));
                     response = await httpClient.PostAsync(
                         new Uri($"api/{apiVersion}/Tenants/{tenantId}/Namespaces/{namespaceId}/Types/{waveCompound.Id}", UriKind.Relative),
                         content19a)
@@ -837,7 +837,7 @@ namespace SdsRestApiCore
 
                     // create an SdsStream
                     Console.WriteLine("Creating an SdsStream off of type with compound index");
-                    var streamCompound = new SdsStream
+                    SdsStream streamCompound = new ()
                     {
                         Id = streamIdCompound,
                         Name = "Wave Data Sample",
@@ -845,7 +845,7 @@ namespace SdsRestApiCore
                         Description = "This is a sample SdsStream for storing WaveData type measurements",
                     };
 
-                    using var content19b = new StringContent(JsonConvert.SerializeObject(streamCompound));
+                    using StringContent content19b = new (JsonConvert.SerializeObject(streamCompound));
                     response = await httpClient.PutAsync(
                         new Uri($"api/{apiVersion}/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{streamCompound.Id}", UriKind.Relative),
                         content19b)
@@ -855,42 +855,42 @@ namespace SdsRestApiCore
                     // Step 24
                     Console.WriteLine("Inserting data");
 
-                    using var content20a = new StringContent(JsonConvert.SerializeObject(new List<WaveDataCompound>() { GetWaveMultiplier(1, 10) }));
+                    using StringContent content20a = new (JsonConvert.SerializeObject(new List<WaveDataCompound>() { GetWaveMultiplier(1, 10) }));
                     response = await httpClient.PostAsync(
                         new Uri($"api/{apiVersion}/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{streamCompound.Id}/Data", UriKind.Relative),
                         content20a)
                         .ConfigureAwait(false);
                     CheckIfResponseWasSuccessful(response);
 
-                    using var content20b = new StringContent(JsonConvert.SerializeObject(new List<WaveDataCompound>() { GetWaveMultiplier(2, 2) }));
+                    using StringContent content20b = new (JsonConvert.SerializeObject(new List<WaveDataCompound>() { GetWaveMultiplier(2, 2) }));
                     response = await httpClient.PostAsync(
                         new Uri($"api/{apiVersion}/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{streamCompound.Id}/Data", UriKind.Relative),
                         content20b)
                         .ConfigureAwait(false);
                     CheckIfResponseWasSuccessful(response);
 
-                    using var content20c = new StringContent(JsonConvert.SerializeObject(new List<WaveDataCompound>() { GetWaveMultiplier(3, 2) }));
+                    using StringContent content20c = new (JsonConvert.SerializeObject(new List<WaveDataCompound>() { GetWaveMultiplier(3, 2) }));
                     response = await httpClient.PostAsync(
                         new Uri($"api/{apiVersion}/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{streamCompound.Id}/Data", UriKind.Relative),
                         content20c)
                         .ConfigureAwait(false);
                     CheckIfResponseWasSuccessful(response);
 
-                    using var content20d = new StringContent(JsonConvert.SerializeObject(new List<WaveDataCompound>() { GetWaveMultiplier(10, 3) }));
+                    using StringContent content20d = new (JsonConvert.SerializeObject(new List<WaveDataCompound>() { GetWaveMultiplier(10, 3) }));
                     response = await httpClient.PostAsync(
                         new Uri($"api/{apiVersion}/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{streamCompound.Id}/Data", UriKind.Relative),
                         content20d)
                         .ConfigureAwait(false);
                     CheckIfResponseWasSuccessful(response);
 
-                    using var content20e = new StringContent(JsonConvert.SerializeObject(new List<WaveDataCompound>() { GetWaveMultiplier(10, 8) }));
+                    using StringContent content20e = new (JsonConvert.SerializeObject(new List<WaveDataCompound>() { GetWaveMultiplier(10, 8) }));
                     response = await httpClient.PostAsync(
                         new Uri($"api/{apiVersion}/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{streamCompound.Id}/Data", UriKind.Relative),
                         content20e)
                         .ConfigureAwait(false);
                     CheckIfResponseWasSuccessful(response);
 
-                    using var content20f = new StringContent(JsonConvert.SerializeObject(new List<WaveDataCompound>() { GetWaveMultiplier(10, 10) }));
+                    using StringContent content20f = new (JsonConvert.SerializeObject(new List<WaveDataCompound>() { GetWaveMultiplier(10, 10) }));
                     response = await httpClient.PostAsync(
                         new Uri($"api/{apiVersion}/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{streamCompound.Id}/Data", UriKind.Relative),
                         content20f)
@@ -909,8 +909,8 @@ namespace SdsRestApiCore
                     CheckIfResponseWasSuccessful(response);
                     WaveDataCompound firstCompound = JsonConvert.DeserializeObject<WaveDataCompound>(await response.Content.ReadAsStringAsync().ConfigureAwait(false));
 
-                    var startIndex = "2|1";
-                    var endIndex = "10|8";
+                    string startIndex = "2|1";
+                    string endIndex = "10|8";
                     response = await httpClient.GetAsync(
                         new Uri($"api/{apiVersion}/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{streamCompound.Id}/Data/Transform?startIndex={startIndex}&endIndex={endIndex}", UriKind.Relative))
                         .ConfigureAwait(false);
@@ -922,7 +922,7 @@ namespace SdsRestApiCore
 
                     Console.WriteLine("Window Data:");
 
-                    foreach (var evnt in data)
+                    foreach (WaveDataCompound evnt in data)
                     {
                         Console.WriteLine(evnt.ToString());
                     }
@@ -993,7 +993,7 @@ namespace SdsRestApiCore
 
         private static void PrintStreamViewMapProperties(SdsStreamViewMap sdsStreamViewMap)
         {
-            foreach (var prop in sdsStreamViewMap.Properties)
+            foreach (SdsStreamViewProperty prop in sdsStreamViewMap.Properties)
             {
                 if (prop.TargetId != null)
                 {
@@ -1010,74 +1010,74 @@ namespace SdsRestApiCore
 
         private static SdsType BuildWaveDataType(string id)
         {
-            var intSdsType = new SdsType
+            SdsType intSdsType = new ()
             {
                 Id = "intSdsType",
                 SdsTypeCode = SdsTypeCode.Int32,
             };
 
-            var doubleSdsType = new SdsType
+            SdsType doubleSdsType = new ()
             {
                 Id = "doubleSdsType",
                 SdsTypeCode = SdsTypeCode.Double,
             };
 
-            var orderProperty = new SdsTypeProperty
+            SdsTypeProperty orderProperty = new ()
             {
                 Id = "Order",
                 SdsType = intSdsType,
                 IsKey = true,
             };
 
-            var tauProperty = new SdsTypeProperty
+            SdsTypeProperty tauProperty = new ()
             {
                 Id = "Tau",
                 SdsType = doubleSdsType,
             };
 
-            var radiansProperty = new SdsTypeProperty
+            SdsTypeProperty radiansProperty = new ()
             {
                 Id = "Radians",
                 SdsType = doubleSdsType,
             };
 
-            var sinProperty = new SdsTypeProperty
+            SdsTypeProperty sinProperty = new ()
             {
                 Id = "Sin",
                 SdsType = doubleSdsType,
             };
 
-            var cosProperty = new SdsTypeProperty
+            SdsTypeProperty cosProperty = new ()
             {
                 Id = "Cos",
                 SdsType = doubleSdsType,
             };
 
-            var tanProperty = new SdsTypeProperty
+            SdsTypeProperty tanProperty = new ()
             {
                 Id = "Tan",
                 SdsType = doubleSdsType,
             };
 
-            var sinhProperty = new SdsTypeProperty
+            SdsTypeProperty sinhProperty = new ()
             {
                 Id = "Sinh",
                 SdsType = doubleSdsType,
             };
 
-            var coshProperty = new SdsTypeProperty
+            SdsTypeProperty coshProperty = new ()
             {
                 Id = "Cosh",
                 SdsType = doubleSdsType,
             };
 
-            var tanhProperty = new SdsTypeProperty
+            SdsTypeProperty tanhProperty = new ()
             {
                 Id = "Tanh",
                 SdsType = doubleSdsType,
             };
 
-            var waveType = new SdsType
+            SdsType waveType = new ()
             {
                 Id = id,
                 Name = "WaveData",
@@ -1101,74 +1101,74 @@ namespace SdsRestApiCore
 
         private static SdsType BuildWaveDataTargetType(string id)
         {
-            var intSdsType = new SdsType
+            SdsType intSdsType = new ()
             {
                 Id = "intSdsType",
                 SdsTypeCode = SdsTypeCode.Int32,
             };
 
-            var doubleSdsType = new SdsType
+            SdsType doubleSdsType = new ()
             {
                 Id = "doubleSdsType",
                 SdsTypeCode = SdsTypeCode.Double,
             };
 
-            var orderTargetProperty = new SdsTypeProperty
+            SdsTypeProperty orderTargetProperty = new ()
             {
                 Id = "OrderTarget",
                 SdsType = intSdsType,
                 IsKey = true,
             };
 
-            var tauTargetProperty = new SdsTypeProperty
+            SdsTypeProperty tauTargetProperty = new ()
             {
                 Id = "TauTarget",
                 SdsType = doubleSdsType,
             };
 
-            var radiansTargetProperty = new SdsTypeProperty
+            SdsTypeProperty radiansTargetProperty = new ()
             {
                 Id = "RadiansTarget",
                 SdsType = doubleSdsType,
             };
 
-            var sinTargetProperty = new SdsTypeProperty
+            SdsTypeProperty sinTargetProperty = new ()
             {
                 Id = "SinTarget",
                 SdsType = doubleSdsType,
             };
 
-            var cosTargetProperty = new SdsTypeProperty
+            SdsTypeProperty cosTargetProperty = new ()
             {
                 Id = "CosTarget",
                 SdsType = doubleSdsType,
             };
 
-            var tanTargetProperty = new SdsTypeProperty
+            SdsTypeProperty tanTargetProperty = new ()
             {
                 Id = "TanTarget",
                 SdsType = doubleSdsType,
             };
 
-            var sinhTargetProperty = new SdsTypeProperty
+            SdsTypeProperty sinhTargetProperty = new ()
             {
                 Id = "SinhTarget",
                 SdsType = doubleSdsType,
             };
 
-            var coshTargetProperty = new SdsTypeProperty
+            SdsTypeProperty coshTargetProperty = new ()
             {
                 Id = "CoshTarget",
                 SdsType = doubleSdsType,
             };
 
-            var tanhTargetProperty = new SdsTypeProperty
+            SdsTypeProperty tanhTargetProperty = new ()
             {
                 Id = "TanhTarget",
                 SdsType = doubleSdsType,
             };
 
-            var waveType = new SdsType
+            SdsType waveType = new ()
             {
                 Id = id,
                 Name = "WaveData",
@@ -1192,38 +1192,38 @@ namespace SdsRestApiCore
 
         private static SdsType BuildWaveDataTargetIntType(string id)
         {
-            var intSdsType = new SdsType
+            SdsType intSdsType = new ()
             {
                 Id = "intSdsType",
                 SdsTypeCode = SdsTypeCode.Int32,
             };
 
-            var orderTargetProperty = new SdsTypeProperty
+            SdsTypeProperty orderTargetProperty = new ()
             {
                 Id = "OrderTarget",
                 SdsType = intSdsType,
                 IsKey = true,
             };
 
-            var sinIntProperty = new SdsTypeProperty
+            SdsTypeProperty sinIntProperty = new ()
             {
                 Id = "SinInt",
                 SdsType = intSdsType,
             };
 
-            var cosIntProperty = new SdsTypeProperty
+            SdsTypeProperty cosIntProperty = new ()
             {
                 Id = "CosInt",
                 SdsType = intSdsType,
             };
 
-            var tanIntProperty = new SdsTypeProperty
+            SdsTypeProperty tanIntProperty = new ()
             {
                 Id = "TanInt",
                 SdsType = intSdsType,
             };
 
-            var waveTargetIntType = new SdsType
+            SdsType waveTargetIntType = new ()
             {
                 Id = id,
                 Name = "WaveData",
@@ -1242,19 +1242,19 @@ namespace SdsRestApiCore
 
         private static SdsType BuildWaveDataCompoundType(string id)
         {
-            var intSdsType = new SdsType
+            SdsType intSdsType = new ()
             {
                 Id = "intSdsType",
                 SdsTypeCode = SdsTypeCode.Int32,
             };
 
-            var doubleSdsType = new SdsType
+            SdsType doubleSdsType = new ()
             {
                 Id = "doubleSdsType",
                 SdsTypeCode = SdsTypeCode.Double,
             };
 
-            var orderProperty = new SdsTypeProperty
+            SdsTypeProperty orderProperty = new ()
             {
                 Id = "Order",
                 SdsType = intSdsType,
@@ -1262,7 +1262,7 @@ namespace SdsRestApiCore
                 Order = 0,
             };
 
-            var multiplierProperty = new SdsTypeProperty
+            SdsTypeProperty multiplierProperty = new ()
             {
                 Id = "Multiplier",
                 SdsType = intSdsType,
@@ -1270,55 +1270,55 @@ namespace SdsRestApiCore
                 Order = 1,
             };
 
-            var tauProperty = new SdsTypeProperty
+            SdsTypeProperty tauProperty = new ()
             {
                 Id = "Tau",
                 SdsType = doubleSdsType,
             };
 
-            var radiansProperty = new SdsTypeProperty
+            SdsTypeProperty radiansProperty = new ()
             {
                 Id = "Radians",
                 SdsType = doubleSdsType,
             };
 
-            var sinProperty = new SdsTypeProperty
+            SdsTypeProperty sinProperty = new ()
             {
                 Id = "Sin",
                 SdsType = doubleSdsType,
             };
 
-            var cosProperty = new SdsTypeProperty
+            SdsTypeProperty cosProperty = new ()
             {
                 Id = "Cos",
                 SdsType = doubleSdsType,
             };
 
-            var tanProperty = new SdsTypeProperty
+            SdsTypeProperty tanProperty = new ()
             {
                 Id = "Tan",
                 SdsType = doubleSdsType,
             };
 
-            var sinhProperty = new SdsTypeProperty
+            SdsTypeProperty sinhProperty = new ()
             {
                 Id = "Sinh",
                 SdsType = doubleSdsType,
             };
 
-            var coshProperty = new SdsTypeProperty
+            SdsTypeProperty coshProperty = new ()
             {
                 Id = "Cosh",
                 SdsType = doubleSdsType,
             };
 
-            var tanhProperty = new SdsTypeProperty
+            SdsTypeProperty tanhProperty = new ()
             {
                 Id = "Tanh",
                 SdsType = doubleSdsType,
             };
 
-            var waveType = new SdsType
+            SdsType waveType = new ()
             {
                 Id = id,
                 Name = "WaveData",
@@ -1343,7 +1343,7 @@ namespace SdsRestApiCore
 
         private static WaveData GetWave(int order, double multiplier)
         {
-            var radians = order * (Math.PI / 32);
+            double radians = order * (Math.PI / 32);
 
             return new WaveData
             {
@@ -1361,8 +1361,8 @@ namespace SdsRestApiCore
 
         private static WaveDataCompound GetWaveMultiplier(int order, int multiplier)
         {
-            var random = new Random();
-            var radians = ((random.Next(1, 100) * 2 * Math.PI) % 2) * Math.PI;
+            Random random = new ();
+            double radians = ((random.Next(1, 100) * 2 * Math.PI) % 2) * Math.PI;
 
             return new WaveDataCompound
             {
