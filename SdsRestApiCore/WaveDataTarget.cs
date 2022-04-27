@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Globalization;
 using System.Text;
 
 namespace SdsRestApiCore
@@ -26,16 +27,17 @@ namespace SdsRestApiCore
 
         public override string ToString()
         {
+            CultureInfo cultureInfo = CultureInfo.InvariantCulture;
             StringBuilder builder = new ();
-            builder.Append($"OrderTarget: {OrderTarget}");
-            builder.Append($", RadiansTarget: {RadiansTarget}");
-            builder.Append($", TauTarget: {TauTarget}");
-            builder.Append($", SinTarget: {SinTarget}");
-            builder.Append($", CosTarget: {CosTarget}");
-            builder.Append($", TanTarget: {TanTarget}");
-            builder.Append($", SinhTarget: {SinhTarget}");
-            builder.Append($", CoshTarget: {CoshTarget}");
-            builder.Append($", TanhTarget: {TanhTarget}");
+            _ = builder.Append(cultureInfo, $"OrderTarget: {OrderTarget}");
+            _ = builder.Append(cultureInfo, $", RadiansTarget: {RadiansTarget}");
+            _ = builder.Append(cultureInfo, $", TauTarget: {TauTarget}");
+            _ = builder.Append(cultureInfo, $", SinTarget: {SinTarget}");
+            _ = builder.Append(cultureInfo, $", CosTarget: {CosTarget}");
+            _ = builder.Append(cultureInfo, $", TanTarget: {TanTarget}");
+            _ = builder.Append(cultureInfo, $", SinhTarget: {SinhTarget}");
+            _ = builder.Append(cultureInfo, $", CoshTarget: {CoshTarget}");
+            _ = builder.Append(cultureInfo, $", TanhTarget: {TanhTarget}");
             return builder.ToString();
         }
     }

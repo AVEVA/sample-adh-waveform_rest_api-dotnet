@@ -593,9 +593,9 @@ namespace SdsRestApiCore
                     // update metadata
                     Console.WriteLine("Let's make some changes to the Metadata on our stream:");
                     JsonPatchDocument patch = new ();
-                    patch.Remove("Region");
-                    patch.Replace("Province", "Ontario");
-                    patch.Add("City", "Toronto");
+                    _ = patch.Remove("Region");
+                    _ = patch.Replace("Province", "Ontario");
+                    _ = patch.Add("City", "Toronto");
 
                     using StringContent content17 = new (JsonConvert.SerializeObject(patch));
                     response = await httpClient.PatchAsync(
@@ -663,7 +663,7 @@ namespace SdsRestApiCore
                                 Type = "Role",
                             },
                         };
-                        patch.Add("/RoleTrusteeAccessControlEntries/-", entry);
+                        _ = patch.Add("/RoleTrusteeAccessControlEntries/-", entry);
                         using StringContent content18 = new (JsonConvert.SerializeObject(patch));
                         response = await httpClient.PatchAsync(new Uri($"api/{apiVersion}/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{streamId}/AccessControl", UriKind.Relative), content18).ConfigureAwait(false);
                         CheckIfResponseWasSuccessful(response);
@@ -979,7 +979,7 @@ namespace SdsRestApiCore
         {
             try
             {
-                methodToRun(value).Wait(10000);
+                _ = methodToRun(value).Wait(10000);
             }
             catch (Exception ex)
             {

@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Globalization;
 using System.Text;
 
 namespace SdsRestApiCore
@@ -26,16 +27,18 @@ namespace SdsRestApiCore
 
         public override string ToString()
         {
+            CultureInfo cultureInfo = CultureInfo.InvariantCulture;
+
             StringBuilder builder = new ();
-            builder.Append($"Order: {Order}");
-            builder.Append($", Radians: {Radians}");
-            builder.Append($", Tau: {Tau}");
-            builder.Append($", Sin: {Sin}");
-            builder.Append($", Cos: {Cos}");
-            builder.Append($", Tan: {Tan}");
-            builder.Append($", Sinh: {Sinh}");
-            builder.Append($", Cosh: {Cosh}");
-            builder.Append($", Tanh: {Tanh}");
+            _ = builder.Append(cultureInfo, $"Order: {Order}");
+            _ = builder.Append(cultureInfo, $", Radians: {Radians}");
+            _ = builder.Append(cultureInfo, $", Tau: {Tau}");
+            _ = builder.Append(cultureInfo, $", Sin: {Sin}");
+            _ = builder.Append(cultureInfo, $", Cos: {Cos}");
+            _ = builder.Append(cultureInfo, $", Tan: {Tan}");
+            _ = builder.Append(cultureInfo, $", Sinh: {Sinh}");
+            _ = builder.Append(cultureInfo, $", Cosh: {Cosh}");
+            _ = builder.Append(cultureInfo, $", Tanh: {Tanh}");
             return builder.ToString();
         }
     }
