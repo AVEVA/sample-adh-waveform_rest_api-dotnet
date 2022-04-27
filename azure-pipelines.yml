@@ -50,6 +50,11 @@ jobs:
         parameters:
           secrets: 'TenantId, NamespaceId, ClientId, ClientSecret, Resource'
 
+      - task: UseDotNet@2
+        inputs:
+            packageType: 'sdk'
+            version: '5.x'
+
       - task: DotNetCoreCLI@2
         displayName: 'Nuget restore'
         inputs:
