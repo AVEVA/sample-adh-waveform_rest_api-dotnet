@@ -29,15 +29,15 @@ namespace SdsRestApiCore
         {
             CultureInfo cultureInfo = CultureInfo.InvariantCulture;
             StringBuilder builder = new ();
-            _ = builder.Append(cultureInfo, $"OrderTarget: {OrderTarget}");
-            _ = builder.Append(cultureInfo, $", RadiansTarget: {RadiansTarget}");
-            _ = builder.Append(cultureInfo, $", TauTarget: {TauTarget}");
-            _ = builder.Append(cultureInfo, $", SinTarget: {SinTarget}");
-            _ = builder.Append(cultureInfo, $", CosTarget: {CosTarget}");
-            _ = builder.Append(cultureInfo, $", TanTarget: {TanTarget}");
-            _ = builder.Append(cultureInfo, $", SinhTarget: {SinhTarget}");
-            _ = builder.Append(cultureInfo, $", CoshTarget: {CoshTarget}");
-            _ = builder.Append(cultureInfo, $", TanhTarget: {TanhTarget}");
+            builder.Append(cultureInfo, $"OrderTarget: {OrderTarget}");
+            builder.Append(cultureInfo, $", RadiansTarget: {RadiansTarget}");
+            builder.Append(cultureInfo, $", TauTarget: {TauTarget}");
+            builder.Append(cultureInfo, $", SinTarget: {SinTarget}");
+            builder.Append(cultureInfo, $", CosTarget: {CosTarget}");
+            builder.Append(cultureInfo, $", TanTarget: {TanTarget}");
+            builder.Append(cultureInfo, $", SinhTarget: {SinhTarget}");
+            builder.Append(cultureInfo, $", CoshTarget: {CoshTarget}");
+            builder.Append(cultureInfo, $", TanhTarget: {TanhTarget}");
             return builder.ToString();
         }
     }

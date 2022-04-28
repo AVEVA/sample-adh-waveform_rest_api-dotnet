@@ -30,15 +30,15 @@ namespace SdsRestApiCore
             CultureInfo cultureInfo = CultureInfo.InvariantCulture;
 
             StringBuilder builder = new ();
-            _ = builder.Append(cultureInfo, $"Order: {Order}");
-            _ = builder.Append(cultureInfo, $", Radians: {Radians}");
-            _ = builder.Append(cultureInfo, $", Tau: {Tau}");
-            _ = builder.Append(cultureInfo, $", Sin: {Sin}");
-            _ = builder.Append(cultureInfo, $", Cos: {Cos}");
-            _ = builder.Append(cultureInfo, $", Tan: {Tan}");
-            _ = builder.Append(cultureInfo, $", Sinh: {Sinh}");
-            _ = builder.Append(cultureInfo, $", Cosh: {Cosh}");
-            _ = builder.Append(cultureInfo, $", Tanh: {Tanh}");
+            builder.Append(cultureInfo, $"Order: {Order}");
+            builder.Append(cultureInfo, $", Radians: {Radians}");
+            builder.Append(cultureInfo, $", Tau: {Tau}");
+            builder.Append(cultureInfo, $", Sin: {Sin}");
+            builder.Append(cultureInfo, $", Cos: {Cos}");
+            builder.Append(cultureInfo, $", Tan: {Tan}");
+            builder.Append(cultureInfo, $", Sinh: {Sinh}");
+            builder.Append(cultureInfo, $", Cosh: {Cosh}");
+            builder.Append(cultureInfo, $", Tanh: {Tanh}");
             return builder.ToString();
         }
     }

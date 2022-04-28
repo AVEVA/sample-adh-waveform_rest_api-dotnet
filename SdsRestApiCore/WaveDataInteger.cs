@@ -20,10 +20,10 @@ namespace SdsRestApiCore
             CultureInfo cultureInfo = CultureInfo.InvariantCulture;
 
             StringBuilder builder = new ();
-            _ = builder.Append(cultureInfo, $"OrderTarget: {OrderTarget}");
-            _ = builder.Append(cultureInfo, $", SinInt: {SinInt}");
-            _ = builder.Append(cultureInfo, $", CosInt: {CosInt}");
-            _ = builder.Append(cultureInfo, $", TanInt: {TanInt}");
+            builder.Append(cultureInfo, $"OrderTarget: {OrderTarget}");
+            builder.Append(cultureInfo, $", SinInt: {SinInt}");
+            builder.Append(cultureInfo, $", CosInt: {CosInt}");
+            builder.Append(cultureInfo, $", TanInt: {TanInt}");
             return builder.ToString();
         }
     }
