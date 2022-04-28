@@ -3,11 +3,11 @@
 | :loudspeaker: **Notice**: Samples have been updated to reflect that they work on AVEVA Data Hub. The samples also work on OSIsoft Cloud Services unless otherwise noted. |
 | -----------------------------------------------------------------------------------------------|  
 
-**Version:** 1.2.11
+**Version:** 1.3.0
 
 [![Build Status](https://dev.azure.com/osieng/engineering/_apis/build/status/product-readiness/ADH/aveva.sample-adh-waveform_rest_api-dotnet?branchName=main)](https://dev.azure.com/osieng/engineering/_build/latest?definitionId=3093&branchName=main)
 
-Developed against DotNet 5.0.
+Developed against DotNet 6.0.
 
 ## Building a Client with the rest calls directly
 
@@ -301,7 +301,7 @@ RunInTryCatch(httpClient.DeleteAsync,($"api/{apiVersion}/Tenants/{tenantId}/Name
 
 ---
 
-Tested against DotNet 5.0.
+Tested against DotNet 6.0.
 
 For the main ADH DotNet waveform samples page [ReadMe](https://github.com/osisoft/OSI-Samples-OCS/blob/main/docs/SDS_WAVEFORM_DOTNET.md)  
 For the main ADH waveform samples page [ReadMe](https://github.com/osisoft/OSI-Samples-OCS/blob/main/docs/SDS_WAVEFORM.md)  
