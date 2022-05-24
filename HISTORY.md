@@ -1,5 +1,9 @@
 # Version History
 
+## 1.3.1 / 2022-05-24
+
+- Update communities queries to be compliant with changes made to the API
+
 ## 1.3.0 / 2022-04-28
 
 - Upgraded to .NET 6
