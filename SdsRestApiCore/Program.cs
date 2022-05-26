@@ -672,7 +672,7 @@ namespace SdsRestApiCore
                         // searching the community
                         Console.WriteLine();
                         Console.WriteLine("Searching the community");
-                        response = await httpClient.GetAsync(new Uri($"api/{apiVersion}-preview/Tenants/{tenantId}/Search/Communities/{communityId}/Streams?query={streamId}", UriKind.Relative)).ConfigureAwait(false);
+                        response = await httpClient.GetAsync(new Uri($"api/{apiVersion}-preview/Search/Communities/{communityId}/Streams?query={streamId}", UriKind.Relative)).ConfigureAwait(false);
                         CheckIfResponseWasSuccessful(response);
 
                         List<StreamSearchResult> streamsList = JsonConvert.DeserializeObject<List<StreamSearchResult>>(await response.Content.ReadAsStringAsync().ConfigureAwait(false));
