@@ -1,6 +1,6 @@
 # Sequential Data Store .NET REST API Sample
 
-**Version:** 1.3.4
+**Version:** 1.3.5
 
 [![Build Status](https://dev.azure.com/osieng/engineering/_apis/build/status/product-readiness/ADH/aveva.sample-adh-waveform_rest_api-dotnet?branchName=main)](https://dev.azure.com/osieng/engineering/_build/latest?definitionId=3093&branchName=main)
 
