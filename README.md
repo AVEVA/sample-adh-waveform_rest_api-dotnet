@@ -2,15 +2,15 @@
 
 **Version:** 1.3.5
 
-[![Build Status](https://dev.azure.com/osieng/engineering/_apis/build/status/product-readiness/ADH/aveva.sample-adh-waveform_rest_api-dotnet?branchName=main)](https://dev.azure.com/osieng/engineering/_build/latest?definitionId=3093&branchName=main)
+[![Build Status](https://dev.azure.com/AVEVA-VSTS/Cloud%20Platform/_apis/build/status%2Fproduct-readiness%2FADH%2FAVEVA.sample-adh-waveform_rest_api-dotnet?repoName=AVEVA%2Fsample-adh-waveform_rest_api-dotnet&branchName=main)](https://dev.azure.com/AVEVA-VSTS/Cloud%20Platform/_build/latest?definitionId=16149&repoName=AVEVA%2Fsample-adh-waveform_rest_api-dotnet&branchName=main)
 
 Developed against DotNet 6.0.
 
 ## Building a Client with the rest calls directly
 
-The sample does not makes use of the AVEVA Data Hub Client Libraries. When working in .NET, it is generally recommended that you use the ADH Client Libraries metapackage, OSIsoft.OCSClients. The metapackage is a NuGet package available from [https://api.nuget.org/v3/index.json](https://api.nuget.org/v3/index.json). The libraries offer a framework of classes that make client development easier.
+The sample does not makes use of the CONNECT data services Client Libraries. When working in .NET, it is generally recommended that you use the Cds Client Libraries metapackage, OSIsoft.OCSClients. The metapackage is a NuGet package available from [https://api.nuget.org/v3/index.json](https://api.nuget.org/v3/index.json). The libraries offer a framework of classes that make client development easier.
 
-[SDS documentation](https://ocs-docs.osisoft.com/Content_Portal/Documentation/SequentialDataStore/Data_Store_and_SDS.html)
+[SDS documentation](https://docs.aveva.com/bundle/data-hub/page/developer-guide/sequential-data-store-dev/sds-lp-dev.html)
 
 ## Getting Started
 
@@ -67,15 +67,15 @@ response = await httpClient.PostAsync($"api/{apiVersion}/Tenants/{tenantId}/Name
 
 ### Community
 
-If you would like to see an example of basic interactions with an ADH community, enter an existing community id in the `CommunityId` field of the configuration. Make sure to also grant the appropriate "Community Member" role to the Client-Credentials Client used by the sample. If you have not yet created a community, see the [documentation](https://docs.osisoft.com/bundle/ocs/page/communities/create-a-community.html) for instructions. Entering a community id will enable three additional steps in the sample.
+If you would like to see an example of basic interactions with an Cds community, enter an existing community id in the `CommunityId` field of the configuration. Make sure to also grant the appropriate "Community Member" role to the Client-Credentials Client used by the sample. If you have not yet created a community, see the [documentation](https://docs.osisoft.com/bundle/ocs/page/communities/create-a-community.html) for instructions. Entering a community id will enable three additional steps in the sample.
 
-If you are not using ADH communities, leave the `CommunityId` field blank.
+If you are not using Cds communities, leave the `CommunityId` field blank.
 
 ## Create an SdsType
 
 To use SDS, you define SdsTypes that describe the kinds of data you want to store in SdsStreams. SdsTypes are the model that define SdsStreams.
 
-SdsTypes can define simple atomic types, such as integers, floats or strings, or they can define complex types by grouping other SdsTypes. For more information about SdsTypes, refer to the [SDS documentation](https://ocs-docs.osisoft.com/Content_Portal/Documentation/SequentialDataStore/Data_Store_and_SDS.html).
+SdsTypes can define simple atomic types, such as integers, floats or strings, or they can define complex types by grouping other SdsTypes. For more information about SdsTypes, refer to the [SDS documentation](https://docs.aveva.com/bundle/data-hub/page/developer-guide/sequential-data-store-dev/sds-lp-dev.html).
 
 To create an SdsType with a rest call:
 
@@ -223,7 +223,7 @@ response = await httpClient.PutAsync($"api/{apiVersion}/Tenants/{tenantId}/Names
     new StringContent(JsonConvert.SerializeObject(waveStream)));
 ```
 
-The process consists of two steps. First, the Property Override must be created, then the stream must be updated. Note that the sample retrieves three data points before and after updating the stream to show that it has changed. See the [SDS documentation](https://ocs-docs.osisoft.com/Content_Portal/Documentation/SequentialDataStore/Data_Store_and_SDS.html) for more information about SDS Property Overrides.
+The process consists of two steps. First, the Property Override must be created, then the stream must be updated. Note that the sample retrieves three data points before and after updating the stream to show that it has changed. See the [SDS documentation](https://docs.aveva.com/bundle/data-hub/page/developer-guide/sequential-data-store-dev/sds-lp-dev.html) for more information about SDS Property Overrides.
 
 ## SdsStreamViews
 
@@ -300,7 +300,7 @@ RunInTryCatch(httpClient.DeleteAsync,($"api/{apiVersion}/Tenants/{tenantId}/Name
 
 Tested against DotNet 6.0.
 
-For the main ADH DotNet waveform samples page [ReadMe](https://github.com/osisoft/OSI-Samples-OCS/blob/main/docs/SDS_WAVEFORM_DOTNET.md)  
-For the main ADH waveform samples page [ReadMe](https://github.com/osisoft/OSI-Samples-OCS/blob/main/docs/SDS_WAVEFORM.md)  
-For the main ADH samples page [ReadMe](https://github.com/osisoft/OSI-Samples-OCS)  
-For the main AVEVA samples page [ReadMe](https://github.com/osisoft/OSI-Samples)
+For the main Cds DotNet waveform samples page [ReadMe](https://github.com/AVEVA/AVEVA-Samples-CloudOperations/blob/main/docs/SDS_WAVEFORM_DOTNET.md)  
+For the main Cds waveform samples page [ReadMe](https://github.com/AVEVA/AVEVA-Samples-CloudOperations/blob/main/docs/SDS_WAVEFORM.md)  
+For the main Cds samples page [ReadMe](https://github.com/AVEVA/AVEVA-Samples-CloudOperations)  
+For the main AVEVA samples page [ReadMe](https://github.com/AVEVA/AVEVA-Samples)
